@@ -25,6 +25,7 @@
       position: relative;
       overflow-x: hidden;
       background: none;
+      cursor: none; /* Hide default cursor for fun */
     }
     /* Background image */
     body::before {
@@ -35,12 +36,12 @@
       background-size: cover;
       z-index: -3;
     }
-    /* Subtle black overlay for slight darkening */
+    /* Slightly darker overlay */
     body::after {
       content: "";
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.12);
+      background: rgba(0, 0, 0, 0.25);
       z-index: -2;
     }
 
@@ -52,6 +53,7 @@
       z-index: 10;
       will-change: transform;
       transition: transform 0.1s linear;
+      transform-origin: center center;
     }
 
     .container {
@@ -139,17 +141,23 @@
     updateCountdown();
     const countdownInterval = setInterval(updateCountdown, 1000);
 
-    // Plane fly left-to-right animation at fixed 50px from top
+    // Plane fly left-to-right animation with vertical follow cursor
     const plane = document.querySelector('.plane');
-    const speed = 2; // pixels per frame, adjust to taste
-    let posX = -500; // start offscreen (plane width)
-    const posY = 50; // fixed 50px from top
+    const speed = 2; // pixels per frame
+    let posX = -500; // start offscreen left
+    let posY = window.innerHeight / 2; // initial vertical center
+
+    window.addEventListener('mousemove', e => {
+      posY = e.clientY - 250; // offset half plane height (500px/2) to center vertically on cursor
+      // Clamp posY so plane never goes off top or bottom screen:
+      posY = Math.min(Math.max(0, posY), window.innerHeight - 500);
+    });
 
     function animate() {
       posX += speed;
 
       if (posX > window.innerWidth) {
-        posX = -500; // reset to start from left offscreen
+        posX = -500; // reset to start left offscreen
       }
 
       plane.style.transform = `translate(${posX}px, ${posY}px)`;
@@ -160,8 +168,8 @@
     animate();
 
     window.addEventListener('resize', () => {
-      // Keep plane at fixed 50px from top on resize
-      plane.style.transform = `translate(${posX}px, 50px)`;
+      posY = Math.min(posY, window.innerHeight - 500);
+      plane.style.transform = `translate(${posX}px, ${posY}px)`;
     });
   </script>
 </body>
