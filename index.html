@@ -46,7 +46,7 @@
 
     .plane {
       position: fixed;
-      width: 500px;
+      width: 800px;
       pointer-events: none;
       user-select: none;
       z-index: 10;
@@ -141,7 +141,7 @@
 
     // Plane fly left-to-right animation at fixed 50px from top
     const plane = document.querySelector('.plane');
-    const speed = 2; // pixels per frame, adjust to taste
+    const speed = 4; // pixels per frame, adjust to taste
     let posX = -500; // start offscreen left
     const posY = 50; // fixed 50px from top
 
@@ -165,3 +165,4 @@
   </script>
 </body>
 </html>
+
