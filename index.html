@@ -12,7 +12,6 @@
       --accent: #2993e0;
       --text-light: #e6eef6;
       --text-muted: rgba(230, 238, 246, 0.6);
-      --clock-icon-color: #2993e0;
       --border-color: #2993e0;
       --border-thickness: 3px;
       --overlay-gradient: rgba(11,18,32,0.7);
@@ -49,8 +48,8 @@
     }
 
     .plane {
-      position: fixed;   /* Changed to absolute */
-      width: 500px;         /* Bigger size */
+      position: fixed;   /* fixed to viewport for full area */
+      width: 200px;      /* big size */
       pointer-events: none;
       user-select: none;
       z-index: 10;
@@ -66,46 +65,7 @@
       position: relative;
       z-index: 1;
     }
-    .clock-row {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-    .clock {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 110px;
-      box-shadow: 0 0 12px rgba(41, 147, 224, 0.6);
-      border: var(--border-thickness) solid var(--border-color);
-    }
-    .clock svg {
-      width: 28px;
-      height: 28px;
-      fill: var(--clock-icon-color);
-      flex-shrink: 0;
-    }
-    .clock-label {
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-    }
-    .clock-time {
-      font-family: 'Courier New', monospace;
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      min-width: 52px;
-      text-align: right;
-      color: var(--text-light);
-      user-select: text;
-    }
+
     .card {
       background: var(--card-bg);
       padding: 32px 40px;
@@ -147,7 +107,7 @@
   <!-- Your custom plane image -->
   <img src="your-plane-with-faces.png" alt="Flying plane" class="plane" />
 
-    </div>
+  <div class="container">
     <div class="card" role="main" aria-label="Countdown timer">
       <h1>Munich Countdown</h1>
       <div id="target">Thu 6 Nov 2025 12:00 London time</div>
@@ -155,6 +115,7 @@
       <div class="small">Owain : Piers : Samuel</div>
     </div>
   </div>
+
   <script>
     // Countdown target date/time (6 Nov 2025 12:00 London time)
     const targetLondon = new Date('2025-11-06T12:00:00Z'); 
@@ -178,18 +139,8 @@
       timerEl.textContent = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     }
 
-    function updateClocks() {
-      const now = new Date();
-      document.getElementById('clock-hpc').textContent = new Intl.DateTimeFormat('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Europe/London'}).format(now);
-      document.getElementById('clock-sizewell').textContent = new Intl.DateTimeFormat('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Europe/London'}).format(now);
-      document.getElementById('clock-flamanville').textContent = new Intl.DateTimeFormat('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Europe/Paris'}).format(now);
-      document.getElementById('clock-chernobyl').textContent = new Intl.DateTimeFormat('en-GB', {hour:'2-digit', minute:'2-digit', hour12:false, timeZone:'Europe/Kiev'}).format(now);
-    }
-
     updateCountdown();
-    updateClocks();
     const countdownInterval = setInterval(updateCountdown, 1000);
-    setInterval(updateClocks, 1000);
 
     // Plane follow cursor logic
     const plane = document.querySelector('.plane');
@@ -217,8 +168,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
