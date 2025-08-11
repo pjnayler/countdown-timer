@@ -8,7 +8,6 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
     :root {
       --bg-dark: #0b1220;
-      --bg-gradient: linear-gradient(135deg, #0b1220 0%, #00172f 100%);
       --card-bg: rgba(255, 255, 255, 0.05);
       --accent: #2993e0;
       --text-light: #e6eef6;
@@ -16,23 +15,58 @@
       --clock-icon-color: #2993e0;
       --border-color: #2993e0;
       --border-thickness: 3px;
+      --overlay-gradient: rgba(11,18,32,0.7);
     }
     html, body {
       height: 100%;
       margin: 0;
-      background: var(--bg-gradient);
-      color: var(--text-light);
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      color: var(--text-light);
+      position: relative;
+      overflow-x: hidden;
+      background: none;
     }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/f/f5/BMW_Welt_2010_07.jpg') no-repeat center center fixed;
+      background-size: cover;
+      filter: brightness(0.35) saturate(1.1);
+      z-index: -2;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--overlay-gradient);
+      z-index: -1;
+    }
+
+    .plane {
+      position: fixed;
+      top: 50%;
+      left: -100px;
+      width: 80px; /* adjust size as needed */
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
     .container {
       text-align: center;
       max-width: 480px;
       width: 95vw;
+      user-select: none;
+      position: relative;
+      z-index: 1;
     }
     .clock-row {
       display: flex;
@@ -51,7 +85,6 @@
       min-width: 110px;
       box-shadow: 0 0 12px rgba(41, 147, 224, 0.6);
       border: var(--border-thickness) solid var(--border-color);
-      user-select: none;
     }
     .clock svg {
       width: 28px;
@@ -112,6 +145,10 @@
   </style>
 </head>
 <body>
+
+  <!-- Your custom plane image -->
+  <img src="your-plane-with-faces.png" alt="Flying plane" class="plane" />
+
   <div class="container">
     <div class="clock-row">
       <div class="clock">
@@ -159,13 +196,13 @@
       <h1>Munich Countdown</h1>
       <div id="target">Thu 6 Nov 2025 12:00 London time</div>
       <div id="timer" aria-live="polite" aria-atomic="true">--:--:--:--</div>
-      <div class="small">Owain : Piers : Samuel </div>
+      <div class="small">Owain : Piers : Samuel</div>
     </div>
   </div>
 
   <script>
-    // Target time: 6 Nov 2025 12:00 London time
-    const targetLondon = new Date('2025-11-06T12:00:00Z'); // UTC for London winter time
+    // Countdown target date/time (6 Nov 2025 12:00 London time)
+    const targetLondon = new Date('2025-11-06T12:00:00Z'); 
 
     const timerEl = document.getElementById('timer');
 
@@ -198,6 +235,30 @@
     updateClocks();
     const countdownInterval = setInterval(updateCountdown, 1000);
     setInterval(updateClocks, 1000);
+
+    // Plane follow cursor logic
+    const plane = document.querySelector('.plane');
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = -100;
+    let currentY = window.innerHeight / 2;
+    const ease = 0.1; // easing speed
+
+    window.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    });
+
+    function animate() {
+      currentX += (targetX - currentX) * ease;
+      currentY += (targetY - currentY) * ease;
+
+      plane.style.transform = `translate(${currentX - plane.width / 2}px, ${currentY - plane.height / 2}px)`;
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
   </script>
 </body>
 </html>
