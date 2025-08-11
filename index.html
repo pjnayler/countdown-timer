@@ -23,7 +23,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       position: relative;
-      overflow-x: hidden;
+      overflow-x: hidden; /* prevent horizontal scroll */
       background: none;
       flex-direction: column;
     }
@@ -56,6 +56,9 @@
       top: 0;
       left: 0;
       transform-origin: top left;
+      /* prevent the plane image itself causing overflow */
+      max-width: 100vw;
+      height: auto;
     }
 
     .container {
@@ -119,9 +122,7 @@
   </div>
 
   <script>
-    // Countdown target date/time (6 Nov 2025 12:00 London time)
-    const targetLondon = new Date('2025-11-06T12:00:00Z'); 
-
+    const targetLondon = new Date('2025-11-06T12:00:00Z');
     const timerEl = document.getElementById('timer');
 
     function pad(n, digits=2){ return String(n).padStart(digits,'0'); }
@@ -144,23 +145,18 @@
     updateCountdown();
     const countdownInterval = setInterval(updateCountdown, 1000);
 
-    // Plane fly left-to-right animation at very top
     const plane = document.querySelector('.plane');
-    const speed = 4; // pixels per frame, adjust to taste
-    let posX = -800; // start fully offscreen (width of plane)
+    const speed = 4;
+    let posX = -800;
 
     function animate() {
       posX += speed;
-
       if (posX > window.innerWidth) {
-        posX = -800; // reset to start from left offscreen
+        posX = -800;
       }
-
       plane.style.transform = `translateX(${posX}px)`;
-
       requestAnimationFrame(animate);
     }
-
     animate();
 
     window.addEventListener('resize', () => {
