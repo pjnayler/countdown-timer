@@ -156,16 +156,16 @@
       </div>
     </div>
     <div class="card" role="main" aria-label="Countdown timer">
-      <h1>Countdown</h1>
-      <div id="target">Target: Thu 6 Nov 2025 17:00 London time</div>
+      <h1>Muni</h1>
+      <div id="target">Target: Thu 6 Nov 2025 12:00 London time</div>
       <div id="timer" aria-live="polite" aria-atomic="true">--:--:--:--</div>
-      <div class="small">Days : Hours : Minutes : Seconds</div>
+      <div class="small">Owain : Piers : Samuel : Seconds</div>
     </div>
   </div>
 
   <script>
-    // Target time: 6 Nov 2025 17:00 London time
-    const targetLondon = new Date('2025-11-06T17:00:00Z'); // UTC for London winter time
+    // Target time: 6 Nov 2025 12:00 London time
+    const targetLondon = new Date('2025-11-06T12:00:00Z'); // UTC for London winter time
 
     const timerEl = document.getElementById('timer');
 
@@ -175,7 +175,7 @@
       const now = Date.now();
       const diff = targetLondon.getTime() - now;
       if (diff <= 0) {
-        timerEl.textContent = "Time's up!";
+        timerEl.textContent = "Time's up Fuckers!";
         clearInterval(countdownInterval);
         return;
       }
