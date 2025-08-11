@@ -25,7 +25,6 @@
       position: relative;
       overflow-x: hidden;
       background: none;
-      cursor: none; /* Hide default cursor for fun */
     }
     /* Background image */
     body::before {
@@ -53,7 +52,6 @@
       z-index: 10;
       will-change: transform;
       transition: transform 0.1s linear;
-      transform-origin: center center;
     }
 
     .container {
@@ -141,23 +139,17 @@
     updateCountdown();
     const countdownInterval = setInterval(updateCountdown, 1000);
 
-    // Plane fly left-to-right animation with vertical follow cursor
+    // Plane fly left-to-right animation at fixed 50px from top
     const plane = document.querySelector('.plane');
-    const speed = 2; // pixels per frame
+    const speed = 2; // pixels per frame, adjust to taste
     let posX = -500; // start offscreen left
-    let posY = window.innerHeight / 2; // initial vertical center
-
-    window.addEventListener('mousemove', e => {
-      posY = e.clientY - 250; // offset half plane height (500px/2) to center vertically on cursor
-      // Clamp posY so plane never goes off top or bottom screen:
-      posY = Math.min(Math.max(0, posY), window.innerHeight - 500);
-    });
+    const posY = 50; // fixed 50px from top
 
     function animate() {
       posX += speed;
 
       if (posX > window.innerWidth) {
-        posX = -500; // reset to start left offscreen
+        posX = -500; // reset to start from left offscreen
       }
 
       plane.style.transform = `translate(${posX}px, ${posY}px)`;
@@ -168,7 +160,6 @@
     animate();
 
     window.addEventListener('resize', () => {
-      posY = Math.min(posY, window.innerHeight - 500);
       plane.style.transform = `translate(${posX}px, ${posY}px)`;
     });
   </script>
