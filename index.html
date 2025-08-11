@@ -52,7 +52,7 @@
 
     .plane {
       position: fixed;
-      width: 600px;
+      width: 800px;
       pointer-events: none;
       user-select: none;
       z-index: 10;
@@ -150,31 +150,41 @@
     const countdownInterval = setInterval(updateCountdown, 1000);
 
     const plane = document.querySelector('.plane');
-    const speed = 10; // pixels per frame
+    const speed = 4; // horizontal speed in pixels/frame
     let posX = -plane.offsetWidth; // start fully offscreen left
+    let posY = 50; // initial vertical position
+    let targetY = posY;
 
     function animate() {
       posX += speed;
 
-      // when plane fully leaves right side, reset to fully offscreen left
       if (posX > window.innerWidth) {
         posX = -plane.offsetWidth;
       }
 
-      plane.style.transform = `translateX(${posX}px)`;
+      // Smoothly move posY towards targetY (cursor Y)
+      posY += (targetY - posY) * 0.1;
+
+      plane.style.transform = `translate(${posX}px, ${posY}px)`;
+
       requestAnimationFrame(animate);
     }
+
+    window.addEventListener('mousemove', (e) => {
+      // Center the plane vertically on cursor
+      targetY = e.clientY - plane.offsetHeight / 2;
+      // Keep the plane inside viewport vertically (optional)
+      if(targetY < 0) targetY = 0;
+      if(targetY > window.innerHeight - plane.offsetHeight) targetY = window.innerHeight - plane.offsetHeight;
+    });
 
     animate();
 
     window.addEventListener('resize', () => {
-      // on resize, keep plane position consistent
       if (posX > window.innerWidth) {
         posX = -plane.offsetWidth;
       }
-      plane.style.transform = `translateX(${posX}px)`;
     });
   </script>
 </body>
 </html>
-
