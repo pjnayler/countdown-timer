@@ -11,7 +11,7 @@
       --accent: #2993e0;
       --text-light: #e6eef6;
       --text-muted: rgba(230, 238, 246, 0.6);
-      --overlay-gradient: rgba(11,18,32,0.7);
+      --overlay-gradient: rgba(11,18,32,0.0); /* fully transparent */
     }
     html, body {
       height: 100%;
@@ -33,7 +33,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: url('your-background.jpg') no-repeat center center fixed;
       background-size: cover;
-      filter: brightness(0.9) saturate(1.1);
+      /* No filter here, original brightness */
       z-index: -2;
     }
     body::after {
@@ -161,12 +161,9 @@
 
     // Optional: Update posY on resize to keep vertical center
     window.addEventListener('resize', () => {
-      // Reset vertical position to center on window resize
       const newPosY = window.innerHeight / 2;
       plane.style.transform = `translate(${posX}px, ${newPosY - plane.height / 2}px)`;
     });
   </script>
 </body>
 </html>
-
-
