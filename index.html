@@ -49,10 +49,8 @@
     }
 
     .plane {
-      position: fixed;
-      top: 50%;
-      left: -100px;
-      width: 80px; /* adjust size as needed */
+      position: absolute;   /* Changed to absolute */
+      width: 200px;         /* Bigger size */
       pointer-events: none;
       user-select: none;
       z-index: 10;
@@ -253,7 +251,7 @@
       currentX += (targetX - currentX) * ease;
       currentY += (targetY - currentY) * ease;
 
-      plane.style.transform = `translate(${currentX - plane.width / 10}px, ${currentY - plane.height / 10}px)`;
+      plane.style.transform = `translate(${currentX - plane.width / 2}px, ${currentY - plane.height / 2}px)`;
 
       requestAnimationFrame(animate);
     }
@@ -262,4 +260,3 @@
   </script>
 </body>
 </html>
-
