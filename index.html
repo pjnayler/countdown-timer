@@ -18,16 +18,19 @@
       font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       color: var(--text-light);
       background: none;
-      overflow-x: hidden; /* no horizontal scroll */
+      overflow-x: hidden;
     }
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* start at top */
+      min-height: 100vh;
+      padding-top: 820px; /* leave space for plane */
+      box-sizing: border-box;
+      position: relative;
+      justify-content: center; /* center countdown vertically in remaining space */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      position: relative;
     }
     /* Background image */
     body::before {
@@ -65,11 +68,9 @@
     .container {
       max-width: 480px;
       width: 95vw;
-      margin-top: 820px; /* space below plane */
       user-select: none;
       z-index: 1;
       text-align: center;
-      /* center horizontally */
       margin-left: auto;
       margin-right: auto;
     }
@@ -149,20 +150,28 @@
     const countdownInterval = setInterval(updateCountdown, 1000);
 
     const plane = document.querySelector('.plane');
-    const speed = 4;
-    let posX = -800;
+    const speed = 4; // pixels per frame
+    let posX = -plane.offsetWidth; // start fully offscreen left
 
     function animate() {
       posX += speed;
+
+      // when plane fully leaves right side, reset to fully offscreen left
       if (posX > window.innerWidth) {
-        posX = -800;
+        posX = -plane.offsetWidth;
       }
+
       plane.style.transform = `translateX(${posX}px)`;
       requestAnimationFrame(animate);
     }
+
     animate();
 
     window.addEventListener('resize', () => {
+      // on resize, keep plane position consistent
+      if (posX > window.innerWidth) {
+        posX = -plane.offsetWidth;
+      }
       plane.style.transform = `translateX(${posX}px)`;
     });
   </script>
