@@ -52,7 +52,7 @@
 
     .plane {
       position: fixed;
-      width: 800px;
+      width: 1000px;
       pointer-events: none;
       user-select: none;
       z-index: 10;
@@ -150,9 +150,9 @@
     const countdownInterval = setInterval(updateCountdown, 1000);
 
     const plane = document.querySelector('.plane');
-    const speed = 4; // horizontal speed in pixels/frame
+    const speed = 10; // horizontal speed in pixels/frame
     let posX = -plane.offsetWidth; // start fully offscreen left
-    let posY = 50; // initial vertical position
+    let posY = 20; // initial vertical position
     let targetY = posY;
 
     function animate() {
@@ -188,3 +188,4 @@
   </script>
 </body>
 </html>
+
