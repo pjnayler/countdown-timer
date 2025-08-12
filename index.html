@@ -1,197 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Countdown Timer - Teams Tab</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-    :root {
-      --card-bg: rgba(255, 255, 255, 0.1);
-      --accent: #2993e0;
-      --text-light: #e6eef6;
-      --text-muted: rgba(230, 238, 246, 0.6);
-    }
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-      color: var(--text-light);
-      background: none;
-      overflow-x: hidden;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding-top: 200px; /* leave space for plane */
-      box-sizing: border-box;
-      position: relative;
-      justify-content: center; /* center countdown vertically in remaining space */
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    /* Background image */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('your-background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      z-index: -3;
-    }
-    /* Slightly darker overlay */
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.25);
-      z-index: -2;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Munich Countdown</title>
 
-    .plane {
-      position: fixed;
-      width: 1000px;
-      pointer-events: none;
-      user-select: none;
-      z-index: 10;
-      will-change: transform;
-      transition: transform 0.1s linear;
-      top: 0;
-      left: 0;
-      transform-origin: top left;
-      max-width: 100vw;
-      height: auto;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-    .container {
-      max-width: 480px;
-      width: 95vw;
-      user-select: none;
-      z-index: 1;
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
-    }
+:root {
+  --accent: #2993e0;
+  --text-light: #e6eef6;
+  --text-muted: rgba(230, 238, 246, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.12);
+}
 
-    .card {
-      background: var(--card-bg);
-      padding: 32px 40px;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0, 23, 47, 0.7);
-      user-select: none;
-    }
-    h1 {
-      margin: 0 0 12px 0;
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-    }
-    #target {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-      user-select: text;
-    }
-    #timer {
-      font-size: 3rem;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      font-family: 'Courier New', monospace;
-      color: var(--text-light);
-      user-select: text;
-    }
-    .small {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 050px;
-      user-select: none;
-    }
-  </style>
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  overflow-x: hidden;
+}
+
+/* Background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('your-background.jpg') center/cover no-repeat fixed;
+  z-index: -3;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.65));
+  z-index: -2;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 180px;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Plane styling */
+.plane {
+  position: fixed;
+  width: 900px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 10;
+  will-change: transform;
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  max-width: 100vw;
+  height: auto;
+}
+
+/* Card container */
+.container {
+  max-width: 480px;
+  width: 90%;
+  z-index: 1;
+}
+
+.card {
+  background: var(--glass-bg);
+  padding: 32px 40px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 23, 47, 0.7);
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  color: var(--accent);
+}
+
+#target {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+#timer {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  font-family: 'Courier New', monospace;
+  color: var(--text-light);
+  text-shadow: 0 0 12px rgba(41, 147, 224, 0.7);
+}
+
+.small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .plane {
+    width: 600px;
+  }
+}
+</style>
 </head>
 <body>
 
-  <!-- Your custom plane image -->
-  <img src="your-plane-with-faces.png" alt="Flying plane" class="plane" />
+<img src="your-plane-with-faces.png" alt="Flying plane" class="plane" />
 
-  <div class="container">
-    <div class="card" role="main" aria-label="Countdown timer">
-      <h1>Munich Countdown</h1>
-      <div id="target">Thu 6 Nov 2025 12:00 London time</div>
-      <div id="timer" aria-live="polite" aria-atomic="true">--:--:--:--</div>
-      <div class="small">Owain : Piers : Samuel</div>
-    </div>
+<div class="container">
+  <div class="card" role="main" aria-label="Countdown timer">
+    <h1>Munich Countdown</h1>
+    <div id="target">Thu 6 Nov 2025 12:00 London time</div>
+    <div id="timer" aria-live="polite" aria-atomic="true">--:--:--:--</div>
+    <div class="small">Owain : Piers : Samuel</div>
   </div>
+</div>
 
-  <script>
-    const targetLondon = new Date('2025-11-06T12:00:00Z');
-    const timerEl = document.getElementById('timer');
+<script>
+const targetLondon = new Date('2025-11-06T12:00:00Z');
+const timerEl = document.getElementById('timer');
 
-    function pad(n, digits=2){ return String(n).padStart(digits,'0'); }
+function pad(n, digits=2){ return String(n).padStart(digits,'0'); }
 
-    function updateCountdown() {
-      const now = Date.now();
-      const diff = targetLondon.getTime() - now;
-      if (diff <= 0) {
-        timerEl.textContent = "Time's up Fuckers!";
-        clearInterval(countdownInterval);
-        return;
-      }
-      const seconds = Math.floor(diff / 1000) % 60;
-      const minutes = Math.floor(diff / (1000 * 60)) % 60;
-      const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      timerEl.textContent = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
-    }
+function updateCountdown() {
+  const now = Date.now();
+  const diff = targetLondon.getTime() - now;
+  if (diff <= 0) {
+    timerEl.textContent = "Time's up!";
+    clearInterval(countdownInterval);
+    return;
+  }
+  const seconds = Math.floor(diff / 1000) % 60;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  timerEl.textContent = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+}
 
-    updateCountdown();
-    const countdownInterval = setInterval(updateCountdown, 1000);
+updateCountdown();
+const countdownInterval = setInterval(updateCountdown, 1000);
 
-    const plane = document.querySelector('.plane');
-    const speed = 10; // horizontal speed in pixels/frame
-    let posX = -plane.offsetWidth; // start fully offscreen left
-    let posY = 20; // initial vertical position
-    let targetY = posY;
+/* Plane animation */
+const plane = document.querySelector('.plane');
+const speed = 4;
+let posX = -plane.offsetWidth;
+let posY = 20;
+let targetY = posY;
 
-    function animate() {
-      posX += speed;
+function animate() {
+  posX += speed;
 
-      if (posX > window.innerWidth) {
-        posX = -plane.offsetWidth;
-      }
+  if (posX > window.innerWidth) {
+    posX = -plane.offsetWidth;
+  }
 
-      // Smoothly move posY towards targetY (cursor Y)
-      posY += (targetY - posY) * 0.1;
+  posY += (targetY - posY) * 0.1;
 
-      plane.style.transform = `translate(${posX}px, ${posY}px)`;
+  plane.style.transform = `translate(${posX}px, ${posY}px)`;
 
-      requestAnimationFrame(animate);
-    }
+  requestAnimationFrame(animate);
+}
 
-    window.addEventListener('mousemove', (e) => {
-      // Center the plane vertically on cursor
-      targetY = e.clientY - plane.offsetHeight / 2;
-      // Keep the plane inside viewport vertically (optional)
-      if(targetY < 0) targetY = 0;
-      if(targetY > window.innerHeight - plane.offsetHeight) targetY = window.innerHeight - plane.offsetHeight;
-    });
+window.addEventListener('mousemove', (e) => {
+  targetY = e.clientY - plane.offsetHeight / 2;
+  if(targetY < 0) targetY = 0;
+  if(targetY > window.innerHeight - plane.offsetHeight) targetY = window.innerHeight - plane.offsetHeight;
+});
 
-    animate();
+animate();
 
-    window.addEventListener('resize', () => {
-      if (posX > window.innerWidth) {
-        posX = -plane.offsetWidth;
-      }
-    });
-  </script>
+window.addEventListener('resize', () => {
+  if (posX > window.innerWidth) {
+    posX = -plane.offsetWidth;
+  }
+});
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
