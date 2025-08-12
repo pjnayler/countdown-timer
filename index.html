@@ -30,6 +30,7 @@ body::before {
   inset: 0;
   background: url('your-background.jpg') center/cover no-repeat fixed;
   z-index: -3;
+  transition: transform 0.2s ease-out;
 }
 
 body::after {
@@ -61,7 +62,7 @@ body {
   will-change: transform;
   top: 0;
   left: 0;
-  transform-origin: top left;
+  transform-origin: center;
   max-width: 100vw;
   height: auto;
 }
@@ -131,6 +132,7 @@ h1 {
 </div>
 
 <script>
+/* Countdown logic */
 const targetLondon = new Date('2025-11-06T12:00:00Z');
 const timerEl = document.getElementById('timer');
 
@@ -154,25 +156,42 @@ function updateCountdown() {
 updateCountdown();
 const countdownInterval = setInterval(updateCountdown, 1000);
 
-/* Plane animation */
+/* More realistic plane animation */
 const plane = document.querySelector('.plane');
-const speed = 4;
 let posX = -plane.offsetWidth;
-let posY = 20;
+let posY = window.innerHeight / 3;
 let targetY = posY;
+let speedX = 2;
+let bobOffset = 0;
 
-function animate() {
-  posX += speed;
+function animatePlane() {
+  // Horizontal movement with accel/decel
+  if (posX < window.innerWidth / 4) speedX += 0.02;
+  if (posX > window.innerWidth * 0.75) speedX -= 0.02;
+  posX += speedX;
 
-  if (posX > window.innerWidth) {
+  // Reset after flying fully offscreen right
+  if (posX > window.innerWidth + plane.offsetWidth) {
     posX = -plane.offsetWidth;
+    posY = Math.random() * window.innerHeight * 0.5;
+    speedX = 2;
   }
 
-  posY += (targetY - posY) * 0.1;
+  // Smooth vertical movement towards target
+  posY += (targetY - posY) * 0.05;
 
-  plane.style.transform = `translate(${posX}px, ${posY}px)`;
+  // Gentle turbulence bobbing
+  bobOffset += 0.05;
+  let bob = Math.sin(bobOffset) * 5;
 
-  requestAnimationFrame(animate);
+  // Tilt based on climb/descent
+  let tilt = (targetY - posY) * 0.05;
+  tilt = Math.max(Math.min(tilt, 15), -15);
+
+  // Apply transform
+  plane.style.transform = `translate(${posX}px, ${posY + bob}px) rotate(${tilt}deg)`;
+
+  requestAnimationFrame(animatePlane);
 }
 
 window.addEventListener('mousemove', (e) => {
@@ -181,8 +200,18 @@ window.addEventListener('mousemove', (e) => {
   if(targetY > window.innerHeight - plane.offsetHeight) targetY = window.innerHeight - plane.offsetHeight;
 });
 
-animate();
+animatePlane();
 
+/* Parallax background effect */
+const bg = document.querySelector('body::before'); // pseudo element, so we fake it
+document.addEventListener('mousemove', (e) => {
+  const moveX = (e.clientX / window.innerWidth - 0.5) * 10;
+  const moveY = (e.clientY / window.innerHeight - 0.5) * 10;
+  document.body.style.setProperty('--bg-shift-x', `${moveX}px`);
+  document.body.style.setProperty('--bg-shift-y', `${moveY}px`);
+});
+
+/* Resize fix */
 window.addEventListener('resize', () => {
   if (posX > window.innerWidth) {
     posX = -plane.offsetWidth;
